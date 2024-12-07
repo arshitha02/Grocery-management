@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery Selection</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('{{ url_for('static', filename='images/entry-bg.jpg') }}');   
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Heading on the leftmost side */
+    .navbar-brand {
+  font-style: italic;
+  color: #3f403dc1;
+  flex-grow: 1;
+  font-weight: bold; /* Add this line to make it bold */
+}
+
+
+    /* Centered navigation items */
+    .navbar-nav {
+      display: flex;
+      justify-content: center;
+      flex-grow: 2;
+    }
+
+    .navbar-nav .nav-item {
+      margin: 0 15px;
+    }
+
+    .navbar-nav .nav-link {
+      color: grey;
+    }
+
+/* Active link styling */
+.navbar-nav .nav-link.active {
+  color: black;  /* Set text color for active link */
+  font-weight: bold;
+}
+
+    /* Profile photo and dropdown */
+    .navbar-nav .nav-item .profile-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-left: 250%;
+    }
+
+    /* Profile on the rightmost side */
+    .navbar-nav .nav-item:last-child {
+      
+      margin-right: auto;
+    }
+
+    /* Dropdown menu styling */
+    .dropdown-menu {
+      min-width: 200px;
+    }
+
+    /* Container styling */
+    .container {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      margin: 0 auto;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 25px;
+      padding: 5px 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      color: none;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+    }
+
+    .item-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .item-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .item-price {
+      font-size: 12px;
+      color: #ffc107;
+      margin: 5px 0;
+    }
+
+    .quantity {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .quantity input {
+      width: 30px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #333;
+      color: white;
+    }
+
+    .quantity button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .quantity button:hover {
+      background: #0056b3;
+    }
+
+    .add-to-cart {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .add-to-cart:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">FarmFresh SuperMart</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mx-auto"> <!-- Center the items using mx-auto -->
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Add Product</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Checkout</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
+      </ul>
+      <!-- Profile Dropdown -->
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://randomuser.me/api/portraits/men/41.jpg" class="profile-photo" alt="Profile">
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Change Password</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 style="color: #3f403dc1;">Grocery Selection</h1>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <input type="text" class="form-control" placeholder="Search for groceries...">
+    </div>
+
+    <div id="groceryCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% set item_chunks = grocery_items|batch(6) %}
+        {% for chunk in item_chunks %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <div class="row">
+              {% for item in chunk %}
+                <div class="col-12 col-md-2">
+                  <div class="item-card">
+                    <img src="{{ url_for('static', filename='images/' + item['image']) }}" alt="{{ item['name'] }}">
+                    <div class="item-name">{{ item['name'] }}</div>
+                    <div class="item-price">{{ item['price'] }}</div>
+                    <div class="quantity">
+                      <button onclick="updateQuantity('{{ item['id'] }}', -1)">-</button>
+                      <input type="number" id="{{ item['id'] }}-qty" value="0" readonly>
+                      <button onclick="updateQuantity('{{ item['id'] }}', 1)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart('{{ item['id'] }}')">Add to Cart</button>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Carousel controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#groceryCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#groceryCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    function updateQuantity(itemId, change) {
+      let qty = document.getElementById(itemId + '-qty');
+      let currentQty = parseInt(qty.value);
+      let newQty = currentQty + change;
+
+      if (newQty >= 0) {
+        qty.value = newQty;
+      }
+    }
+
+    function addToCart(itemId) {
+      let qty = document.getElementById(itemId + '-qty').value;
+      alert('Item ' + itemId + ' added to cart with quantity: ' + qty);
+    }
+  </script>
+</body>
+</html>
