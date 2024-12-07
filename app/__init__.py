@@ -7,16 +7,16 @@ app.secret_key = 'supersecretkey'
 @app.route('/login',methods=['GET','POST'])
 def login():
     # Render the login page with a title
-   # if request.method == 'POST':
-   #     print("yes")
-   #     username = request.form.get('username')
-   #     password = request.form.get('password')
-   #     if username == "admin" and password == "admin123":
-   #         return redirect(url_for('home'))  # Replace 'dashboard' with your post-login route
-   #     else:
-   #         flash("Invalid username or password. Please try again.", "danger")
-   #         return redirect(url_for('login'))
-   # else:
+    if request.method == 'POST':
+        print("yes")
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == "admin" and password == "admin123":
+            return redirect(url_for('home'))  # Replace 'dashboard' with your post-login route
+        else:
+            flash("Invalid username or password. Please try again.", "danger")
+            return redirect(url_for('login'))
+    else:
         return render_template('login.html', title="Login Page")
 
 @app.route('/home')#, methods=['POST'])
