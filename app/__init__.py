@@ -1,4 +1,6 @@
 from flask import Flask,render_template,request,redirect,url_for,flash
+from app.models.authModel import findUser
+from app.models.database import close_db_connection
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey' 
@@ -11,15 +13,15 @@ def login():
         print("yes")
         username = request.form.get('username')
         password = request.form.get('password')
-        if username == "admin" and password == "admin123":
-            return redirect(url_for('home'))  # Replace 'dashboard' with your post-login route
+        if findUser(username,password):
+            return redirect(url_for('home'))  
         else:
             flash("Invalid username or password. Please try again.", "danger")
             return redirect(url_for('login'))
     else:
         return render_template('login.html', title="Login Page")
 
-@app.route('/home')#, methods=['POST'])
+@app.route('/home')
 def home():
     grocery_items = [
     {'id': 'apple', 'name': 'Apples', 'price': 'Rs.50.00/kg', 'image': 'apple.jpg'},
@@ -42,3 +44,4 @@ def home():
    # if username == 'admin' and password == 'admin123':
     #    return f"Welcome, {username}!"
     #else:
+
