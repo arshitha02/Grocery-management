@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request,redirect,url_for,flash,jsonify,Response
 from app.models.authModel import findUser
+from app.models.productsModel import getItmes,reduceQnty
 from app.models.database import close_db_connection
 from app.auth import create_token,token_required,set_jwt_cookie
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -36,19 +37,9 @@ def login():
 @app.route('/home')
 @token_required
 def home():
-    grocery_items = [
-    {'id': 'apple', 'name': 'Apples', 'price': '50.00/kg', 'image': 'apple.jpg', 'qnty': 10},
-    {'id': 'banana', 'name': 'Bananas', 'price': '30.50/kg', 'image': 'banana.jpg', 'qnty': 15},
-    {'id': 'bread', 'name': 'Bread', 'price': '30.00/loaf', 'image': 'bread.jpg', 'qnty': 20},
-    {'id': 'carrot', 'name': 'Carrot', 'price': '40.00/kg', 'image': 'carrot.jpeg', 'qnty': 25},
-    {'id': 'milk', 'name': 'Milk', 'price': '50.00/liter', 'image': 'milk.jpg', 'qnty': 12},
-    {'id': 'onion', 'name': 'Onions', 'price': '35.00/kg', 'image': 'onion.jpg', 'qnty': 18},
-    {'id': 'orange', 'name': 'Oranges', 'price': '60.00/kg', 'image': 'orange.jpg', 'qnty': 10},
-    {'id': 'potato', 'name': 'Potatoes', 'price': '40.00/kg', 'image': 'potato.jpg', 'qnty': 30}
-]
-
-
-
+   
+    grocery_items=list(getItmes())
+    
     return  render_template('home.html',title="Home page",grocery_items=grocery_items)
     # Access form data
     #username = request.form['username']
@@ -71,6 +62,8 @@ def checkout():
             return jsonify({'error': 'Cart is empty or invalid!'}), 400
 
         # Pass the cart data to the template for display
+        print(cart)
+        reduceQnty(cart[:-1])
         return render_template('checkout.html', title="Checkout Page", cart=cart)
 
     except Exception as e:
