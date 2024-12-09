@@ -1,35 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-</head>
-<body>
-  <h1>Checkout Page</h1>
-  {% if cart %}
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Item Name</th>
-          <th>Quantity</th>
-          <th>Rate per Kg</th>
-          <th>Total Rate</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in cart %}
+{% extends 'base.html' %}
+
+{% block title %}Checkout Page{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1>Checkout Page</h1>
+    {% if cart %}
+      <table class="table table-bordered">
+        <thead>
           <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>₹{{ item.ratePerKg }}</td>
-            <td>₹{{ item.totalRate }}</td>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Rate per Kg (Rs)</th>
+            <th>Total Rate</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>Your cart is empty.</p>
-  {% endif %}
-</body>
-</html>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.ratePerKg }}</td>
+              <td>₹{{ item.totalRate }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      <!-- Proceed to Payment button -->
+      <div class="d-flex justify-content-center mt-4">
+        <button class="btn btn-success" onclick="window.location.href='/payment'">Proceed to Payment</button>
+      </div>
+
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+  </div>
+{% endblock %}

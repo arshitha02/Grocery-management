@@ -296,6 +296,7 @@
   <script>
     // Initialize an empty cart list
 let cart = [];
+let total =0;
 
 // Add to Cart function
 function addToCart(itemId, event) {
@@ -314,7 +315,7 @@ console.log("qty :",qty);
   let itemName = document.querySelector(`#${itemId}-name`).textContent;
   let ratePerKg = parseFloat(document.querySelector(`#${itemId}-rate`).textContent.replace(/[^0-9.]/g, '')); // Remove non-numeric characters
   let totalRate = ratePerKg * qty;
-
+  total+=totalRate;
   // Create an object with the item details
   let item = {
     name: itemName,
@@ -335,7 +336,15 @@ console.log("qty :",qty);
 function proceedToCheckout(event) {
   event.preventDefault();
   console.log(cart);
-  
+
+  let item = {
+    name: '',
+    quantity: '',
+    ratePerKg: '',
+    totalRate: total,
+  };
+
+  cart.push(item)
   // Send the cart data to the backend via POST
   fetch('/checkout', {
     method: 'POST',
