@@ -209,7 +209,7 @@
 
     .carousel-control-prev {
     position: relative;
-    left: -1100px; /* Move the previous button to the left */
+    left: -90%; /* Move the previous button to the left */
   z-index: 1;
 }
   </style>
@@ -261,13 +261,14 @@
                 <div class="col-12 col-md-2">
                   <div class="item-card">
                     <img src="{{ url_for('static', filename='images/' + item['image']) }}" alt="{{ item['name'] }}">
-                    <div class="item-name">{{ item['name'] }}</div>
-                    <div class="item-price">{{ item['price'] }}</div>
+                    <div class="item-name" id="{{ item['id'] }}-name">{{ item['name'] }}</div>
+                    <div class="item-price" id="{{ item['id'] }}-rate">₹ {{ item['price'] }}</div>
                     <div class="quantity">
                       <input type="text" id="{{ item['id'] }}-qty" placeholder="0" />
                     </div>
                     <button class="add-to-cart" onclick="addToCart('{{ item['id'] }}', event)">Add to Cart</button>
                   </div>
+                  
                 </div>
               {% endfor %}
             </div>
@@ -293,11 +294,45 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
   <script>
-    function addToCart(itemId, event) {
-      event.preventDefault();
-      let qty = document.getElementById(itemId + '-qty').value;
-      alert('Added ' + qty + ' of ' + itemId + ' to the cart.');
-    }
+    // Initialize an empty cart list
+let cart = [];
+
+// Add to Cart function
+function addToCart(itemId, event) {
+  event.preventDefault();
+
+  // Get the quantity entered
+  let qty = document.getElementById(itemId + '-qty').value;
+console.log("qty :",qty);
+  // Ensure the quantity is a valid number
+  if (!qty || isNaN(qty) || qty <= 0) {
+    alert('Please enter a valid quantity.');
+    return;
+  }
+
+  // Extract item details from the DOM
+  let itemName = document.querySelector(`#${itemId}-name`).textContent;
+  let ratePerKg = parseFloat(document.querySelector(`#${itemId}-rate`).textContent.replace(/[^0-9.]/g, '')); // Remove non-numeric characters
+  let totalRate = ratePerKg * qty;
+
+  // Create an object with the item details
+  let item = {
+    name: itemName,
+    quantity: parseFloat(qty),
+    ratePerKg: ratePerKg,
+    totalRate: totalRate,
+  };
+
+  // Add the item to the cart
+  cart.push(item);
+
+  // Notify the user
+  alert(`Added ${item.quantity} of ${item.name} to the cart. Total: ₹${item.totalRate.toFixed(2)}`);
+
+  // Optional: Log the cart to the console for debugging
+  console.log(cart);
+}
+
   </script>
 </body>
 </html>

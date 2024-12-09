@@ -24,14 +24,14 @@ def login():
 @app.route('/home')
 def home():
     grocery_items = [
-    {'id': 'apple', 'name': 'Apples', 'price': 'Rs.50.00/kg', 'image': 'apple.jpg'},
-    {'id': 'banana', 'name': 'Bananas', 'price': 'Rs.30.50/kg', 'image': 'banana.jpg'},
-    {'id': 'bread', 'name': 'Bread', 'price': 'Rs.30.00/loaf', 'image': 'bread.jpg'},
-    {'id': 'carrot', 'name': 'Carrot', 'price': 'Rs.40.00/kg', 'image': 'carrot.jpeg'},
-    {'id': 'milk', 'name': 'Milk', 'price': 'Rs.50.00/liter', 'image': 'milk.jpg'},
-    {'id': 'onion', 'name': 'Onions', 'price': 'Rs.35.00/kg', 'image': 'onion.jpg'},
-    {'id': 'orange', 'name': 'Oranges', 'price': 'Rs.60.00/kg', 'image': 'orange.jpg'},
-    {'id': 'potato', 'name': 'Potatoes', 'price': 'Rs.40.00/kg', 'image': 'potato.jpg'}
+    {'id': 'apple', 'name': 'Apples', 'price': '50.00/kg', 'image': 'apple.jpg'},
+    {'id': 'banana', 'name': 'Bananas', 'price': '30.50/kg', 'image': 'banana.jpg'},
+    {'id': 'bread', 'name': 'Bread', 'price': '30.00/loaf', 'image': 'bread.jpg'},
+    {'id': 'carrot', 'name': 'Carrot', 'price': '40.00/kg', 'image': 'carrot.jpeg'},
+    {'id': 'milk', 'name': 'Milk', 'price': '50.00/liter', 'image': 'milk.jpg'},
+    {'id': 'onion', 'name': 'Onions', 'price': '35.00/kg', 'image': 'onion.jpg'},
+    {'id': 'orange', 'name': 'Oranges', 'price': '60.00/kg', 'image': 'orange.jpg'},
+    {'id': 'potato', 'name': 'Potatoes', 'price': '40.00/kg', 'image': 'potato.jpg'}
     ]
 
 
