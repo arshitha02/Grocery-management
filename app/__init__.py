@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,flash
+from flask import Flask,render_template,request,redirect,url_for,flash,jsonify
 from app.models.authModel import findUser
 from app.models.database import close_db_connection
 
@@ -45,3 +45,43 @@ def home():
     #    return f"Welcome, {username}!"
     #else:
 
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    try:
+        # Retrieve the cart data from the POST request
+        cart = request.json.get('cart', [])
+        
+        # Ensure cart data is valid
+        if not cart:
+            return jsonify({'error': 'Cart is empty or invalid!'}), 400
+
+        # Pass the cart data to the template for display
+        return render_template('checkout.html', title="Checkout Page", cart=cart)
+
+    except Exception as e:
+        # Handle any unexpected errors
+        return jsonify({'error': str(e)}), 500
+
+
+
+'''@app.route('/product',method=['GET','POST'])
+def product():
+
+
+
+
+    return render_template('product.html', title="Product Page")
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title="About Page")
+
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', title="Contact Page")
+
+@'''

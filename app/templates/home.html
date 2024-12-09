@@ -225,7 +225,7 @@
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Checkout</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="proceedToCheckout(event)">Checkout</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
       </ul>
       <!-- Profile Dropdown -->
@@ -331,6 +331,35 @@ console.log("qty :",qty);
 
   // Optional: Log the cart to the console for debugging
   console.log(cart);
+}
+function proceedToCheckout(event) {
+  event.preventDefault();
+  console.log(cart);
+  
+  // Send the cart data to the backend via POST
+  fetch('/checkout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ cart }),
+  })
+    .then(response => {
+      if (response.redirected) {
+        // If the response is a redirect, navigate to the checkout page
+        window.location.href = response.url;
+      } else {
+        // Handle the HTML response (not JSON)
+        return response.text(); // Get the HTML content of the page
+      }
+    })
+    .then(html => {
+      // Replace the current page's content with the new checkout page HTML
+      if (html) {
+        document.body.innerHTML = html; // Update the page with the checkout HTML
+      }
+    })
+    .catch(err => console.error('Error:', err));
 }
 
   </script>
