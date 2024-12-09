@@ -263,6 +263,7 @@
                     <img src="{{ url_for('static', filename='images/' + item['image']) }}" alt="{{ item['name'] }}">
                     <div class="item-name" id="{{ item['id'] }}-name">{{ item['name'] }}</div>
                     <div class="item-price" id="{{ item['id'] }}-rate">₹ {{ item['price'] }}</div>
+                    <div class="item-price" id="{{ item['id'] }}-qnty">qnty:{{ item['qnty'] }}Kg</div>
                     <div class="quantity">
                       <input type="text" id="{{ item['id'] }}-qty" placeholder="0" />
                     </div>
@@ -313,9 +314,9 @@ console.log("qty :",qty);
 
   // Extract item details from the DOM
   let itemName = document.querySelector(`#${itemId}-name`).textContent;
+  let itemQnty = document.querySelector(`#${itemId}-qnty`).textContent;
   let ratePerKg = parseFloat(document.querySelector(`#${itemId}-rate`).textContent.replace(/[^0-9.]/g, '')); // Remove non-numeric characters
   let totalRate = ratePerKg * qty;
-  total+=totalRate;
   // Create an object with the item details
   let item = {
     name: itemName,
@@ -325,10 +326,20 @@ console.log("qty :",qty);
   };
 
   // Add the item to the cart
-  cart.push(item);
+  console.log("item qnty = ",itemQnty);
+  let numberPart =  itemQnty.match(/\d+/)[0];
+  if(parseFloat(numberPart)>=(qty))
+  {
+    cart.push(item);
+    total+=totalRate;
+    alert(`Added ${item.quantity} of ${item.name} to the cart. Total: ₹${item.totalRate.toFixed(2)}`);
+  }
+  else
+  {
+    alert(`Error Not Enough Quantity`);
 
+  }
   // Notify the user
-  alert(`Added ${item.quantity} of ${item.name} to the cart. Total: ₹${item.totalRate.toFixed(2)}`);
 
   // Optional: Log the cart to the console for debugging
   console.log(cart);
